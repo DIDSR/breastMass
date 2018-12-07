@@ -94,7 +94,8 @@ int main(int argc, char* argv[]){
   // all of the options
   po::options_description all("All options");
   all.add_options()
-    ("config,c", po::value<std::string>(), "name of configuration file")
+    ("config,c", po::value<std::string>()->required(), "name of configuration file")
+    ("help,h", "print help message")
     ;
   all.add(configFileOpt);
 
@@ -102,6 +103,14 @@ int main(int argc, char* argv[]){
 
   // get configuration filename from command line
   po::store(parse_command_line(argc,argv,all), vm);
+
+  if (vm.count("help")) {
+    cout << "\n";
+    cout << "breastMass - breast mass generation\n\n";
+    cout << opts << "\n";
+    return 1;
+  }
+  
   std::string configFile = vm["config"].as<std::string>();
 
   // read configuration file
@@ -564,82 +573,6 @@ int main(int argc, char* argv[]){
   unsigned char* out = static_cast<unsigned char*>(mass->GetScalarPointer());
   fwrite(out, massDim*massDim*massDim, 1, rawOut);
   fclose(rawOut);
-	
-  // save MIP and standard projection as png
-  vtkSmartPointer<vtkImageData> mip = 
-    vtkSmartPointer<vtkImageData>::New();
-  
-  mip->SetSpacing(massSpacing);
-  mip->SetExtent(-massDim/2, -massDim/2+massDim-1, -massDim/2, -massDim/2+massDim-1, 0, 0);
-  mip->SetOrigin(0.0,0.0,0.0);
-	
-#if VTK_MAJOR_VERSION <= 5
-  mip->SetNumberOfScalarComponents(1);
-  mip->SetScalarTypeToUnsignedChar();
-  mip->AllocateScalars();
-#else
-  mip->AllocateScalars(VTK_UNSIGNED_CHAR,1);
-#endif
-	
-  vtkSmartPointer<vtkImageData> proj = 
-    vtkSmartPointer<vtkImageData>::New();
-		
-  proj->SetSpacing(massSpacing);
-  proj->SetExtent(-massDim/2, -massDim/2+massDim-1, -massDim/2, -massDim/2+massDim-1, 0, 0);
-  proj->SetOrigin(0.0,0.0,0.0);
-	
-#if VTK_MAJOR_VERSION <= 5
-  proj->SetNumberOfScalarComponents(1);
-  proj->SetScalarTypeToUnsignedChar();
-  proj->AllocateScalars();
-#else
-  proj->AllocateScalars(VTK_UNSIGNED_CHAR,1);
-#endif
-	
-	
-  for(int i=massExtent[0]; i<=massExtent[1]; i++){
-    for(int j=massExtent[2]; j<=massExtent[3]; j++){
-      double total = 0.0;
-      unsigned char* p = static_cast<unsigned char*>(proj->GetScalarPointer(i,j,0));
-      unsigned char* m = static_cast<unsigned char*>(mip->GetScalarPointer(i,j,0));
-      for(int k=massExtent[4]; k<=massExtent[5]; k++){
-	unsigned char* q = static_cast<unsigned char*>(mass->GetScalarPointer(i,j,k));
-	total += (double)(*q);
-	if(*q == 1){
-	  *m = 255;
-	}
-      }
-      // scale to 8 bit depth
-      *p = static_cast<unsigned char>(round(total/massDim*256));
-    }
-  }
-	
-  // save image
-  vtkSmartPointer<vtkPNGWriter> png = 
-    vtkSmartPointer<vtkPNGWriter>::New();
-	
-  char imgFilename[128];
-	
-  // mip
-#if VTK_MAJOR_VERSION <= 5
-  png->SetInput(mip);
-#else		
-  png->SetInputData(mip);
-#endif
-  sprintf(imgFilename, "%s_mip.png", fileStub);
-  png->SetFileName(imgFilename);
-  // disable MIP writing, not useful for homog mass
-  //  png->Write();
-	
-  // normal projection
-#if VTK_MAJOR_VERSION <= 5
-  png->SetInput(proj);
-#else		
-  png->SetInputData(proj);
-#endif
-  sprintf(imgFilename, "%s_proj.png", fileStub);
-  png->SetFileName(imgFilename);
-  png->Write();
 	
   // free slm
   for(int i=0; i<=lMax; i++){
