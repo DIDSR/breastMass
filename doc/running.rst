@@ -36,7 +36,7 @@ The /cfg directory contains several sample configuration files
 **testSpiculated.cfg**
   A random 20mm diameter mass with spicules generated at 0.1 mm resolution
 
-**VICTRE_mass.cfg**
+**VICTREMass.cfg**
   The 5mm diameter spiculed mass used in the VICTRE study with specific random number seed (0.05 mm voxel resolution)
 
 

@@ -34,9 +34,10 @@ From a suitable build directory generate a Makefile using cmake and run make::
     > cmake <path to repository>
     > make
 
-where <path to repository> is the directory containing the cloned repository.  Note, when running cmake you may recieve an error message related
-to references to files "/usr/lib/x86_64-linux-gnu/libvtkRenderingPythonTkWidgets.so" and "/usr/bin/vtk".  This is a known Ubuntu VTK bug but since
-we are not linking to these files, the error can safely be ignored.
+where <path to repository> is the directory containing the cloned repository.
+
+.. note:: When running cmake you may recieve an error message related to references to files "/usr/lib/x86_64-linux-gnu/libvtkRenderingPythonTkWidgets.so" and "/usr/bin/vtk".
+	  This is a known Ubuntu VTK bug but since we are not linking to these files, the error can safely be ignored.
 
 Finish
 ------

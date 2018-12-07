@@ -16,6 +16,6 @@ include_directories("$(PROJECT_SOURCE_DIR)")
 SET(CMAKE_BUILD_TYPE "Release")
 SET(CMAKE_CXX_FLAGS  "-std=c++0x ${CMAKE_CXX_FLAGS}")
 
-add_executable(breastMassMain breastMass.cxx)
+add_executable(breastMass breastMass.cxx)
 
-target_link_libraries(breastMassMain lapack blas boost_program_options ${VTK_LIBRARIES})
+target_link_libraries(breastMass lapack blas boost_program_options ${VTK_LIBRARIES})
