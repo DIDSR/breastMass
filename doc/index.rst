@@ -15,7 +15,8 @@ This software is an independent reimplementation of the model described in
 Sisternes, L. , Brankov, J. G., Zysk, A. M., Schmidt, R. A., Nishikawa, R. M. and Wernick, M. N. (2015), *A computational model to generate simulated three‐dimensional breast masses*. Med. Phys., 42: 1098-1118. `doi:10.1118/1.4905232 <https://doi:10.1118/1.4905232>`_
 
 .. image:: VICTRE.png
-
+   :target: https://github.com/DIDSR/VICTRE
+	   
 This software  was developed as part of the `Virtual Imaging
 Clinical Trials for Regulatory Evaluation (VICTRE) project <https://github.com/DIDSR/VICTRE>`_ at the `U. S. Food and Drug Administration <https://www.fda.gov>`_.
 
